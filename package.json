@@ -1,0 +1,51 @@
+{
+    "name": "frame",
+    "version": "0.0.1",
+    "description": "Personal collection of AMD modules for creative coding",
+
+    "contributors": [
+        {
+            "name": "Mathias Paumgarten",
+            "email": "mail@mathias-paumgarten.com"
+        }
+    ],
+
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/MathiasPaumgarten/frame.js/"
+    },
+
+    "bugs": {
+        "url": "https://github.com/MathiasPaumgarten/frame.js/issues"
+    },
+
+    "scripts": {
+        "start": "grunt start",
+        "test": "grunt test"
+    },
+
+    "keywords": [
+        "math",
+        "modular",
+        "creative coding"
+    ],
+
+    "license": "MIT",
+
+    "dependencies": {
+        "mout": "~0.8.0",
+        "cane": "~0.2.0"
+    },
+
+    "devDependencies": {
+        "grunt": "~0.4.1",
+        "grunt-contrib-jshint": "~0.5.3",
+        "grunt-contrib-watch": "~0.4.3",
+        "grunt-karma": "~0.4.4",
+        "grunt-cli": "~0.1.8",
+        "load-grunt-tasks": "~0.2.0",
+        "express": "~3.4.0",
+        "sinon": "~1.7.3",
+        "expect.js": "~0.2.0"
+    }
+}
