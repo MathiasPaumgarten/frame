@@ -12,11 +12,11 @@
 
     "repository": {
         "type": "git",
-        "url": "https://github.com/MathiasPaumgarten/frame.js/"
+        "url": "https://github.com/MathiasPaumgarten/frame.git"
     },
 
     "bugs": {
-        "url": "https://github.com/MathiasPaumgarten/frame.js/issues"
+        "url": "https://github.com/MathiasPaumgarten/frame/issues"
     },
 
     "scripts": {

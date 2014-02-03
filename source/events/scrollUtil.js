@@ -17,25 +17,21 @@ define( [
         document.addEventListener( "keyup", onKeyPress );
     }
 
-    function onMouseWheel( delta ) {
+    function onMouseWheel( delta, event ) {
 
         if ( Math.abs( delta ) > Math.abs( storeDelta ) + 10 ) {
-
-            debounced( delta );
-            storeDelta = delta;
-            return;
-
+            debounced( delta, event );
         } else if ( delta === storeDelta && Math.abs( delta ) === 120 ) {
-            debounced( delta );
+            debounced( delta, event );
         }
 
         storeDelta = delta;
     }
 
-    function onTriggerWheel( delta ) {
+    function onTriggerWheel( delta, event ) {
         var eventName = delta < 0 ? "down" : "up";
 
-        emitter.trigger( eventName );
+        emitter.dispatch( eventName );
 
         event.preventDefault();
         event.stopImmediatePropagation();
@@ -47,7 +43,7 @@ define( [
         var code = event.keyCode;
 
         if ( code === 38 || code === 40 ) {
-            emitter.trigger( code === 38 ? "up" : "down" );
+            emitter.dispatch( code === 38 ? "up" : "down" );
             event.stopPropagation();
             event.preventDefault();
         }

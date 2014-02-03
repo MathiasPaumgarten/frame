@@ -10,6 +10,11 @@ define( [
         y: 0,
 
         set: function( x, y ) {
+            if ( typeof x === "object" ) {
+                y = x.y;
+                x = x.x;
+            }
+
             this.x = x;
             this.y = y;
 
@@ -66,6 +71,19 @@ define( [
 
         return p;
     }
+
+    point.subtract = function( a, b ) {
+        return point( a ).subtract( b );
+    };
+
+    point.add = function( a, b ) {
+        return point( a ).add( b );
+    };
+
+    point.interpolate = function( a, b, percent ) {
+        var difference = point.subtract( b, a ).multiply( percent );
+        return point( a ).add( difference );
+    };
 
     point.proto = proto;
 
