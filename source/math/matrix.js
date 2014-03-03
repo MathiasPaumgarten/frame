@@ -23,6 +23,9 @@ define( [
         },
 
         rotate: function( angle ) {
+            angle = angle % Math.PI;
+
+            var self = this;
             var cos = Math.cos( angle );
             var sin = Math.sin( angle );
 
@@ -30,14 +33,14 @@ define( [
             var storeC = this.c;
             var storeX = this.tx;
 
-            this.a = storeA * cos - this.b * sin;
-            this.b = storeA * sin + this.b * cos;
-            this.c = storeC * cos - this.d * sin;
-            this.d = storeC * sin + this.d * cos;
-            this.tx = storeX * cos - this.ty * sin;
-            this.ty = storeX * sin + this.ty * cos;
+            self.a = storeA * cos - self.b * sin;
+            self.b = storeA * sin + self.b * cos;
+            self.c = storeC * cos - self.d * sin;
+            self.d = storeC * sin + self.d * cos;
+            self.tx = storeX * cos - self.ty * sin;
+            self.ty = storeX * sin + self.ty * cos;
 
-            return this;
+            return self;
         },
 
         translate: function( x, y ) {
@@ -45,6 +48,21 @@ define( [
             this.ty += y;
 
             return this;
+        },
+
+        scale: function( x, y ) {
+            var self = this;
+
+            if ( typeof y === "undefined" ) y = x;
+
+            self.a *= x;
+            self.b *= y;
+            self.c *= x;
+            self.d *= y;
+            self.tx *= x;
+            self.ty *= y;
+
+            return self;
         },
 
         concatinate: function( other ) {
@@ -55,22 +73,23 @@ define( [
             var d = other.d;
             var tx = other.tx;
             var ty = other.ty;
+            var self = this;
 
             if ( a !== 1 || b !== 0 || c !== 0 || d !== 1 ) {
 
-                var storeA = this.a;
-                var storeC = this.c;
+                var storeA = self.a;
+                var storeC = self.c;
 
-                this.a  = storeA * a + this.b * c;
-                this.b  = storeA * b + this.b * d;
-                this.c  = storeC * a + this.d * c;
-                this.d  = storeC * b + this.d * d;
+                self.a  = storeA * a + self.b * c;
+                self.b  = storeA * b + self.b * d;
+                self.c  = storeC * a + self.d * c;
+                self.d  = storeC * b + self.d * d;
             }
 
-            this.tx = storeX * a + this.ty * c + tx;
-            this.ty = storeX * b + this.ty * d + ty;
+            self.tx = storeX * a + self.ty * c + tx;
+            self.ty = storeX * b + self.ty * d + ty;
 
-            return this;
+            return self;
         }
 
     };
