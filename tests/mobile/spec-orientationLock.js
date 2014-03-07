@@ -3,6 +3,7 @@ define( [ "frame/mobile/orientationLock" ], function( orientationLock ) {
     describe( "mobile/orientationLock", function() {
 
         var value;
+        var lock;
 
         beforeEach( function() {
             value = window.orientation;
@@ -11,13 +12,14 @@ define( [ "frame/mobile/orientationLock" ], function( orientationLock ) {
         } );
 
         afterEach( function() {
+            lock.remove();
             window.orientation = value;
             delete this.element;
         } );
 
         it( "should execute initial value to none", function() {
 
-            orientationLock( this.element );
+            lock = orientationLock( this.element );
             expect( this.element.style.display ).to.be( "none" );
         } );
 
@@ -25,13 +27,13 @@ define( [ "frame/mobile/orientationLock" ], function( orientationLock ) {
 
             window.orientation = 90;
 
-            orientationLock( this.element );
+            lock = orientationLock( this.element );
             expect( this.element.style.display ).to.be( "block" );
         } );
 
         it( "should set display to block on horizontal orientation", function() {
 
-            orientationLock( this.element );
+            lock = orientationLock( this.element );
             expect( this.element.style.display ).to.be( "none" );
 
             window.orientation = -90;
@@ -47,7 +49,7 @@ define( [ "frame/mobile/orientationLock" ], function( orientationLock ) {
 
         it( "should set display to block on vertical orientation", function() {
 
-            orientationLock( this.element, { orientation: "horizontal" } );
+            lock = orientationLock( this.element, { orientation: "horizontal" } );
             expect( this.element.style.display ).to.be( "block" );
 
             window.orientation = 90;
@@ -59,6 +61,18 @@ define( [ "frame/mobile/orientationLock" ], function( orientationLock ) {
             window.dispatchEvent( new window.Event( "orientationchange" ) );
 
             expect( this.element.style.display ).to.be( "block" );
+        } );
+
+        it( "should remove orientationLock", function() {
+
+            lock = orientationLock( this.element );
+            lock.remove();
+
+            window.orientation = -90;
+            window.dispatchEvent( new window.Event( "orientationchange" ) );
+
+            expect( this.element.style.display ).to.be( "none" );
+
         } );
 
     } );

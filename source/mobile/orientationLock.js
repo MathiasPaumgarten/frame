@@ -19,6 +19,12 @@ define( [ "mout/object/merge" ], function( merge ) {
 
         orientationChange();
 
+        return {
+            remove: function() {
+                window.removeEventListener( "orientationchange", orientationChange );
+            }
+        };
+
     };
 
 } );
