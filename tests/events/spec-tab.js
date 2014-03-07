@@ -13,13 +13,17 @@ define( [ "frame/events/tab" ], function( tab ) {
             document.body.removeChild( element );
         } );
 
-        function sendEvents() {
+        function sendEvents( closure ) {
             setTimeout( function() {
                 var endEvent = document.createEvent( "Event" );
                 endEvent.initEvent( "touchend", true, true );
 
                 element.dispatchEvent( endEvent );
             }, 100 );
+
+            setTimeout( function() {
+                closure();
+            }, 120 );
 
             var startEvent = document.createEvent( "Event" );
             startEvent.initEvent( "touchstart", true, true );
@@ -33,15 +37,27 @@ define( [ "frame/events/tab" ], function( tab ) {
 
             element.addEventListener( "tab", spy );
 
-            sendEvents();
-
-            setTimeout( function() {
+            sendEvents( function() {
                 expect( spy.calledOnce ).to.be( true );
                 handle.remove();
                 done();
-            }, 120 );
+            } );
 
             handle.remove();
+        } );
+
+        it( "should bubble tab events", function( done ) {
+            var handle = tab();
+            var spy = sinon.spy();
+
+            document.body.addEventListener( "tab", spy );
+
+            sendEvents( function() {
+                expect( spy.calledOnce ).to.be( true );
+                handle.remove();
+                done();
+            } );
+
         } );
 
         it( "should stop triggering tab events", function( done ) {
@@ -52,13 +68,28 @@ define( [ "frame/events/tab" ], function( tab ) {
 
             element.addEventListener( "tab", spy );
 
-            sendEvents();
-
-            setTimeout( function() {
+            sendEvents( function() {
                 expect( spy.called ).to.be( false );
                 done();
-            }, 120 );
+            } );
 
+        } );
+
+        it( "should be cancable", function( done ) {
+            var handle = tab();
+            var spy = sinon.spy();
+
+            element.addEventListener( "tab", function( event ) {
+                event.stopPropagation();
+            } );
+
+            document.body.addEventListener( "tab", spy );
+
+            sendEvents( function() {
+                expect( spy.called ).to.be( false );
+                handle.remove();
+                done();
+            } );
         } );
 
     } );
