@@ -2,22 +2,36 @@ define( [ "frame/events/scroll" ], function( scroll ) {
 
     describe( "events/scroll", function() {
 
-        it( "should trigger event", function() {
+        it( "should trigger event for mousewheel", function() {
 
             var node = document.createElement( "div" );
             var wheelEvent = new window.Event( "mousewheel" );
-            var domWheelEvent = new window.Event( "DOMMouseScroll" );
 
-            wheelEvent.wheelDelta = 100;
-            domWheelEvent.detail = -100;
+            wheelEvent.wheelDelta = 120;
 
             scroll( node, function( delta, event ) {
-                expect( delta ).to.be( 100 );
+                expect( delta ).to.be( 120 );
                 expect( event ).to.be( event );
                 expect( this ).to.be( node );
             } );
 
             node.dispatchEvent( wheelEvent );
+
+        } );
+
+        it( "should trigger event for DOMMouseScroll", function() {
+
+            var node = document.createElement( "div" );
+            var domWheelEvent = new window.Event( "DOMMouseScroll" );
+
+            domWheelEvent.detail = -120;
+
+            scroll( node, function( delta, event ) {
+                expect( delta ).to.be( 120 );
+                expect( event ).to.be( event );
+                expect( this ).to.be( node );
+            } );
+
             node.dispatchEvent( domWheelEvent );
 
         } );
