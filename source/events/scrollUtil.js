@@ -6,15 +6,13 @@ define( [
 
 ], function( dispatcher, scroll, debounce ) {
 
-    var emitter = dispatcher();
+    var scrollUtil = dispatcher();
     var storeDelta = 0;
     var debounced;
+    var scrollHandle;
 
-    function initEvents() {
+    function init() {
         debounced = debounce( onTriggerWheel, 100, true );
-
-        scroll( document, onMouseWheel );
-        document.addEventListener( "keyup", onKeyPress );
     }
 
     function onMouseWheel( delta, event ) {
@@ -31,7 +29,7 @@ define( [
     function onTriggerWheel( delta, event ) {
         var eventName = delta < 0 ? "down" : "up";
 
-        emitter.dispatch( eventName );
+        scrollUtil.dispatch( eventName );
 
         event.preventDefault();
         event.stopImmediatePropagation();
@@ -43,14 +41,30 @@ define( [
         var code = event.keyCode;
 
         if ( code === 38 || code === 40 ) {
-            emitter.dispatch( code === 38 ? "up" : "down" );
+            scrollUtil.dispatch( code === 38 ? "up" : "down" );
             event.stopPropagation();
             event.preventDefault();
         }
     }
 
-    initEvents();
+    scrollUtil.enable = function() {
+        scrollUtil.disable();
+        scrollHandle = scroll( document, onMouseWheel );
 
-    return emitter;
+        document.addEventListener( "keyup", onKeyPress );
+    };
+
+    scrollUtil.disable = function() {
+        if ( scrollHandle ) {
+            scrollHandle.remove();
+            scrollHandle = null;
+        }
+
+        document.removeEventListener( "keyup", onKeyPress );
+    };
+
+    init();
+
+    return scrollUtil;
 
 } );

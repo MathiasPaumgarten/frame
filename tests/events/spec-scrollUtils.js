@@ -13,6 +13,7 @@ define( [ "frame/events/scrollUtil" ], function( scrollUtil ) {
             }
 
             scrollUtil.on( "up", spy );
+            scrollUtil.enable();
 
             setTimeout( dispatch, 4 );
             setTimeout( dispatch, 10 );
@@ -22,6 +23,33 @@ define( [ "frame/events/scrollUtil" ], function( scrollUtil ) {
 
             setTimeout( function() {
                 expect( spy.callCount ).to.be( 1 );
+                done();
+            }, 60 );
+
+        } );
+
+        it( "should not trigger events if not enabled", function( done ) {
+
+            var spy = sinon.spy();
+            var event = new window.Event( "mousewheel", true, true );
+            event.wheelDelta = 100;
+
+            function dispatch() {
+                document.dispatchEvent( event );
+            }
+
+            scrollUtil.on( "up", spy );
+            scrollUtil.enable();
+            scrollUtil.disable();
+
+            setTimeout( dispatch, 4 );
+            setTimeout( dispatch, 10 );
+            setTimeout( dispatch, 15 );
+            setTimeout( dispatch, 50 );
+            setTimeout( dispatch, 55 );
+
+            setTimeout( function() {
+                expect( spy.callCount ).to.be( 0 );
                 done();
             }, 60 );
 
