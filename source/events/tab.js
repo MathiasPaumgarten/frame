@@ -8,8 +8,8 @@ define( function() {
             function onTouchEnd() {
                 removeListener();
 
-                var custommEvent = document.createEvent( "Event" );
-                custommEvent.initEvent( "tab", true, true );
+                var customEvent = document.createEvent( "Event" );
+                customEvent.initEvent( "tab", true, true );
 
                 event.target.dispatchEvent( costumEvent );
             }
