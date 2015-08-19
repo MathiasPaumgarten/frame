@@ -11,7 +11,7 @@ define( function() {
                 var customEvent = document.createEvent( "Event" );
                 customEvent.initEvent( "tab", true, true );
 
-                event.target.dispatchEvent( costumEvent );
+                event.target.dispatchEvent( customEvent );
             }
 
             function removeListener() {
