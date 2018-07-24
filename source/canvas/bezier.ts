@@ -1,12 +1,8 @@
+import { IPoint } from "../math/point";
 
-interface Point {
-    x: number;
-    y: number;
-}
-
-export function bezier( context: CanvasRenderingContext2D, points: Point[] ) {
-    let a: Point;
-    let b: Point;
+export function bezier( context: CanvasRenderingContext2D, points: IPoint[] ) {
+    let a: IPoint;
+    let b: IPoint;
     let i: number;
     let x: number;
     let y: number;

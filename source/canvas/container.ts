@@ -1,36 +1,51 @@
 import { clamp, remove } from "lodash";
 
 export class Container {
-    public children: Container[] = [];
-    public parent?: Container;
+    children: Container[] = [];
+    parent?: Container;
 
-    public append( element: Container ): this {
+    append( element: Container ): this {
+        this.testParent( element );
         this.children.push( element );
+
+        element.parent = this;
+
         return this;
     }
 
-    public prepend( element: Container ): this {
+    prepend( element: Container ): this {
+        this.testParent( element );
         this.children.unshift( element );
+
+        element.parent = this;
+
         return this;
     }
 
-    public insert( element: Container, index: number ) {
+    insert( element: Container, index: number ) {
+        this.testParent( element );
         index = clamp(index, 0, this.children.length );
 
         this.children.splice( index, 0, element );
         element.parent = this;
     }
 
-    public remove( element: Container ) {
+    remove( element: Container ) {
         remove( this.children, element );
         element.parent = undefined;
     }
 
-    public update() {
+    update() {
         for ( const child of this.children ) child.update();
     }
 
-    public render() {
+    render() {
         for ( const child of this.children ) child.render();
+    }
+
+    private testParent( element: Container ) {
+        if ( element.parent ) {
+            throw new Error( "The child container is already in the tree." );
+        }
     }
 }
